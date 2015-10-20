@@ -7,19 +7,25 @@
  */
 include 'public_function.php';
 
-file_put_contents('test.txt',  json_encode($_POST));
-die;
+$app_id = $_POST['app_id'];
+$app_secret = $_POST['app_secret'];
 
-$appid = $_POST['app_id'];
-$appsecret = $_POST['app_secret'];
-
-$get_auth_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&'.'appid='.$appid.'&secret='.$appsecret;
+$get_auth_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&'.'appid='.$app_id.'&secret='.$app_secret;
 $ret = http_get($get_auth_url);
-$ret_array = json_decode($ret);
+$ret_array = json_decode($ret, true);
+
+
+$ajax_response = array(
+    'msg'=>'',
+);
 
 if (!isset($ret_array['errcode'])){
-    S('access_token'.$appid, $ret_array['access_token']);
+    S($app_id.'_access_token', $ret_array['access_token']);
+    $ajax_response['msg'] = 'get access_token successful';
+    $ajax_response['access_token'] = $ret_array['access_token'];
 }
 else{
-    echo $ret_array['errmsg'];
+    $ajax_response['msg'] = $ret_array['errmsg'];
 }
+
+echo json_encode($ajax_response);

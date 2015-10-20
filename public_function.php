@@ -26,8 +26,8 @@ function http_get($url) {
     }
 }
 
-function S($obj, $name){
-    file_put_contents($name, var_export($obj, true));
+function S($name, $obj){
+    file_put_contents($name, $obj, true);
 }
 
 function L($name){
