@@ -42,6 +42,21 @@ and open the template in the editor.
                         },
                     });
                 });
+                
+                $("button#get_user_info").click(function(){
+                    $.ajax({
+                        type:"POST",
+                        url:"wechat_function.php?function=get_user_info",
+                        data:$('form#wechat_config_form').serialize(),
+                        error:function(request){
+                            alert('request error');
+                        },
+                        success:function(data){
+                            ret_obj = JSON.parse(data);
+                            $("input#user_amount").val(ret_obj.amount);
+                        },
+                    });
+                });
             });
         </script>
         
@@ -60,7 +75,8 @@ and open the template in the editor.
             用户数量: 
             <input type="text" id="user_amount" disabled="disabled"/><br>
         </form>
-        <button id="get_user_num">获取用户数量</button>
+        <button id="get_user_num">获取用户数量</button><br>
+        <button id="get_user_info">获取用户信息</button><br>
         
         <script>
         </script>
